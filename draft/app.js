@@ -340,7 +340,15 @@ function startEdit(idx) {
 }
 function saveEdit(idx, newName) {
     newName = newName.trim();
+    teamFeedback.textContent = '';
+    teamFeedback.className = '';
     if (!newName) return;
+    // Prevent duplicate team names (except for itself)
+    if (teams.includes(newName) && teams[idx] !== newName) {
+        teamFeedback.textContent = 'Team name already exists.';
+        teamFeedback.className = 'error';
+        return;
+    }
     teams[idx] = newName;
     editIndex = null;
     renderTeams();
@@ -364,7 +372,15 @@ function startPersonEdit(idx) {
 }
 function savePersonEdit(idx, newName) {
     newName = newName.trim();
+    personFeedback.textContent = '';
+    personFeedback.className = '';
     if (!newName) return;
+    // Prevent duplicate participant names (except for itself)
+    if (people.includes(newName) && people[idx] !== newName) {
+        personFeedback.textContent = 'Participant already exists.';
+        personFeedback.className = 'error';
+        return;
+    }
     people[idx] = newName;
     personEditIndex = null;
     renderPeople();
