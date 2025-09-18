@@ -23,6 +23,7 @@ function renderDraftResults() {
     const section = document.getElementById('draft-results-section');
     const resultsDiv = document.getElementById('draft-results');
     const revealBtn = document.getElementById('reveal-next-btn');
+    const revealAllBtn = document.getElementById('reveal-all-btn');
     if (!draftResults) {
         section.style.display = 'none';
         resultsDiv.innerHTML = '';
@@ -65,9 +66,12 @@ function renderDraftResults() {
     }
     resultsDiv.innerHTML = html;
 
-    // Show/hide Reveal Next button
+
+    // Show/hide Reveal Next and Reveal All buttons, and update remaining text
+    const revealRemainingText = document.getElementById('reveal-remaining-text');
+    const picksLeft = revealOrder.length - revealedCount;
     if (revealBtn) {
-        if (revealedCount < revealOrder.length) {
+        if (picksLeft > 0) {
             revealBtn.style.display = '';
             revealBtn.disabled = false;
         } else {
@@ -80,11 +84,47 @@ function renderDraftResults() {
             }
         };
     }
+    if (revealAllBtn) {
+        if (picksLeft > 0) {
+            revealAllBtn.style.display = '';
+            revealAllBtn.disabled = false;
+        } else {
+            revealAllBtn.style.display = 'none';
+        }
+        revealAllBtn.onclick = function() {
+            if (revealedCount < revealOrder.length) {
+                revealedCount = revealOrder.length;
+                renderDraftResults();
+            }
+        };
+    }
+    if (revealRemainingText) {
+        if (picksLeft > 0) {
+            revealRemainingText.textContent = picksLeft === 1 ? '1 pick left to reveal' : `${picksLeft} picks left to reveal`;
+            revealRemainingText.style.display = '';
+        } else {
+            revealRemainingText.textContent = 'All picks revealed!';
+            revealRemainingText.style.display = '';
+        }
+    }
 
     // Attach restart handler (button is now visible)
     const restartBtn = document.getElementById('restart-draft-btn');
     if (restartBtn) {
         restartBtn.onclick = restartDraft;
+    }
+    // Attach redo picks handler
+    const redoBtn = document.getElementById('redo-picks-btn');
+    if (redoBtn) {
+        redoBtn.onclick = function() {
+            // Only reshuffle if there are teams and people
+            if (teams.length > 0 && people.length > 0) {
+                runDraftAssignment();
+                revealOrder = buildRevealOrder();
+                revealedCount = 0;
+                renderDraftResults();
+            }
+        };
     }
 }
 // --- Restart Draft Logic ---

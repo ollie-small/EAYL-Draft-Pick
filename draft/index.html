@@ -47,8 +47,17 @@
     <section id="draft-results-section" style="display:none; margin-top:2em;">
         <h2>Draft Results</h2>
         <div id="draft-results"></div>
-    <button id="reveal-next-btn" class="edit-action-btn" style="margin-top:1em; display:none;">Reveal Next</button>
-    <button id="restart-draft-btn" style="margin-top:1em;">Restart Draft</button>
+        <div id="reveal-btns-container" style="display: flex; flex-direction: column; align-items: center; gap: 0.7em; margin-top: 1em;">
+            <div id="reveal-remaining-text" style="font-size:1.1em; color:#1976d2; margin-bottom:0.2em;"></div>
+            <div style="display: flex; gap: 1em; justify-content: center;">
+                <button id="reveal-next-btn" class="edit-action-btn" style="display:none;">Reveal Next</button>
+                <button id="reveal-all-btn" class="edit-action-btn" style="display:none;">Reveal All</button>
+            </div>
+        </div>
+        <div class="results-btns-row">
+            <button id="redo-picks-btn" class="results-action-btn">Redo Picks</button>
+            <button id="restart-draft-btn" class="results-action-btn">Restart Draft</button>
+        </div>
     </section>
     </main>
     <script src="app.js"></script>

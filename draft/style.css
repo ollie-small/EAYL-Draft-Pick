@@ -1,3 +1,65 @@
+.results-btns-row {
+    display: flex;
+    gap: 1.2em;
+    justify-content: center;
+    align-items: center;
+    max-width: 500px;
+    margin: 1em auto 0.5em auto;
+    width: 100%;
+}
+
+#redo-picks-btn.results-action-btn,
+#restart-draft-btn.results-action-btn {
+    font-family: 'Inter', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+    font-size: 1.1em;
+    font-weight: 700;
+    padding: 0.8em 2.2em;
+    width: 240px;
+    border: none;
+    border-radius: 32px;
+    background: linear-gradient(90deg, #3949ab 0%, #00bcd4 100%);
+    color: #fff;
+    box-shadow: 0 4px 24px #00bcd455, 0 1.5px 6px #3949ab33;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: background 0.25s, transform 0.15s, box-shadow 0.2s;
+    outline: none;
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    margin: 0;
+}
+
+#redo-picks-btn.results-action-btn:hover,
+#redo-picks-btn.results-action-btn:focus,
+#restart-draft-btn.results-action-btn:hover,
+#restart-draft-btn.results-action-btn:focus {
+    background: linear-gradient(90deg, #00bcd4 0%, #3949ab 100%);
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 8px 32px #00bcd488, 0 2px 12px #3949ab44;
+}
+#reveal-btns-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.7em;
+    margin-top: 1em;
+}
+
+#reveal-btns-container > div {
+    display: flex;
+    gap: 1em;
+    justify-content: center;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 500px;
+}
+
+#reveal-remaining-text {
+    font-size: 1.1em;
+    color: #1976d2;
+    margin-bottom: 0.2em;
+}
 .limit-controls {
     display: flex;
     align-items: center;
@@ -38,6 +100,7 @@
     box-shadow: 0 1px 4px #b3e5fc33;
     transition: background 0.18s, color 0.18s, box-shadow 0.18s;
     margin-left: 0.5em;
+    width: 240px;
 }
 .edit-action-btn:hover {
     background: linear-gradient(90deg, #b3e5fc 0%, #e3f2fd 100%);
