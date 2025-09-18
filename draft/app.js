@@ -7,6 +7,10 @@ function renderDraftResults() {
         resultsDiv.innerHTML = '';
         return;
     }
+    // Hide other sections
+    document.getElementById('team-management').style.display = 'none';
+    document.getElementById('people-management').style.display = 'none';
+    document.getElementById('draft-controls').style.display = 'none';
     section.style.display = 'block';
     let html = '';
     for (const [team, members] of Object.entries(draftResults)) {
@@ -18,6 +22,31 @@ function renderDraftResults() {
         }
     }
     resultsDiv.innerHTML = html;
+    // Attach restart handler (button is now visible)
+    const restartBtn = document.getElementById('restart-draft-btn');
+    if (restartBtn) {
+        restartBtn.onclick = restartDraft;
+    }
+// --- Restart Draft Logic ---
+function restartDraft() {
+    // Reset state
+    teams = [];
+    people = [];
+    draftResults = null;
+    editIndex = null;
+    personEditIndex = null;
+    // Show setup sections, hide results
+    document.getElementById('team-management').style.display = '';
+    document.getElementById('people-management').style.display = '';
+    document.getElementById('draft-controls').style.display = '';
+    document.getElementById('draft-results-section').style.display = 'none';
+    // Re-render lists and controls
+    renderTeams();
+    renderPeople();
+    updateDraftControls();
+}
+
+// (No longer needed: restart handler is attached in renderDraftResults)
 }
 // --- Draft Logic ---
 function runDraftAssignment() {
