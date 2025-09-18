@@ -8,7 +8,19 @@
 </head>
 <body>
     <h1>Draft Pick App</h1>
-    <p id="placeholder">Welcome! The app is under construction.</p>
+    <section id="team-management">
+        <h2>Teams</h2>
+        <form id="add-team-form">
+            <input type="text" id="team-name-input" placeholder="Enter team name" required />
+            <button type="submit">Add Team</button>
+        </form>
+        <ul id="team-list"></ul>
+    </section>
+    <section id="draft-controls">
+        <!-- Draft controls will go here, disabled until 2+ teams -->
+        <button id="start-draft-btn" disabled>Start Draft</button>
+        <p id="team-warning" style="color: #c00; display: none;">At least 2 teams required to start draft.</p>
+    </section>
     <script src="app.js"></script>
 </body>
 </html>
