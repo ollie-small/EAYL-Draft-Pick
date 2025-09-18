@@ -11,6 +11,10 @@
     <main class="container">
         <section id="team-management">
             <h2>Teams</h2>
+            <div class="limit-controls">
+                <label for="team-limit-input">Team Limit:</label>
+                <input type="number" id="team-limit-input" min="2" max="99" value="8" />
+            </div>
             <form id="add-team-form">
                 <input type="text" id="team-name-input" placeholder="Enter team name" required />
                 <button type="submit">Add Team</button>
@@ -22,6 +26,10 @@
 
         <section id="people-management">
         <h2>Participants</h2>
+        <div class="limit-controls">
+            <label for="participant-limit-input">Participant Limit:</label>
+            <input type="number" id="participant-limit-input" min="2" max="999" value="32" />
+        </div>
         <form id="add-person-form">
             <input type="text" id="person-name-input" placeholder="Enter participant name" required />
             <button type="submit">Add Participant</button>

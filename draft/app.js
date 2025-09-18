@@ -95,8 +95,27 @@ function restartDraft() {
     draftResults = null;
     editIndex = null;
     personEditIndex = null;
-        revealOrder = [];
-        revealedCount = 0;
+    revealOrder = [];
+    revealedCount = 0;
+
+    // Clear feedback messages
+    if (typeof teamFeedback !== 'undefined' && teamFeedback) {
+        teamFeedback.textContent = '';
+        teamFeedback.className = '';
+    }
+    if (typeof personFeedback !== 'undefined' && personFeedback) {
+        personFeedback.textContent = '';
+        personFeedback.className = '';
+    }
+    if (typeof draftWarning !== 'undefined' && draftWarning) {
+        draftWarning.textContent = '';
+        draftWarning.style.display = 'none';
+    }
+
+    // Clear textboxes
+    if (typeof teamNameInput !== 'undefined' && teamNameInput) teamNameInput.value = '';
+    if (typeof personNameInput !== 'undefined' && personNameInput) personNameInput.value = '';
+
     // Show setup sections, hide results
     document.getElementById('team-management').style.display = '';
     document.getElementById('people-management').style.display = '';
@@ -150,6 +169,8 @@ function runDraftAssignment() {
 // --- Team Management State ---
 let teams = [];
 let editIndex = null;
+let teamLimit = 8;
+let participantLimit = 32;
 
 // --- Draft Assignment State ---
 let draftResults = null; // { teamName: [participant, ...], ... }
@@ -162,6 +183,8 @@ let personEditIndex = null;
 const teamListEl = document.getElementById('team-list');
 const addTeamForm = document.getElementById('add-team-form');
 const teamNameInput = document.getElementById('team-name-input');
+const teamLimitInput = document.getElementById('team-limit-input');
+const participantLimitInput = document.getElementById('participant-limit-input');
 const startDraftBtn = document.getElementById('start-draft-btn');
 const draftWarning = document.getElementById('draft-warning');
 // Feedback DOM
@@ -295,6 +318,11 @@ addTeamForm.onsubmit = (e) => {
         teamFeedback.className = 'error';
         return;
     }
+    if (teams.length >= teamLimit) {
+        teamFeedback.textContent = `Team limit of ${teamLimit} reached.`;
+        teamFeedback.className = 'error';
+        return;
+    }
     teams.push(name);
     teamNameInput.value = '';
     editIndex = null;
@@ -317,6 +345,11 @@ addPersonForm.onsubmit = (e) => {
     }
     if (people.includes(name)) {
         personFeedback.textContent = 'Participant already exists.';
+        personFeedback.className = 'error';
+        return;
+    }
+    if (people.length >= participantLimit) {
+        personFeedback.textContent = `Participant limit of ${participantLimit} reached.`;
         personFeedback.className = 'error';
         return;
     }
@@ -422,6 +455,10 @@ function updateDraftControls() {
         warning = 'At least 2 teams are needed to start draft.';
     } else if (people.length < 2) {
         warning = 'At least 2 participants are needed to start draft.';
+    } else if (teams.length > teamLimit) {
+        warning = `Too many teams (limit: ${teamLimit}).`;
+    } else if (people.length > participantLimit) {
+        warning = `Too many participants (limit: ${participantLimit}).`;
     }
     if (warning) {
         draftWarning.textContent = warning;
@@ -436,6 +473,21 @@ function updateDraftControls() {
 
 // --- Init ---
 document.addEventListener('DOMContentLoaded', () => {
+    // Set initial values from inputs
+    if (teamLimitInput) {
+        teamLimit = parseInt(teamLimitInput.value, 10) || 8;
+        teamLimitInput.addEventListener('input', (e) => {
+            teamLimit = Math.max(2, parseInt(e.target.value, 10) || 2);
+            updateDraftControls();
+        });
+    }
+    if (participantLimitInput) {
+        participantLimit = parseInt(participantLimitInput.value, 10) || 32;
+        participantLimitInput.addEventListener('input', (e) => {
+            participantLimit = Math.max(2, parseInt(e.target.value, 10) || 2);
+            updateDraftControls();
+        });
+    }
     renderTeams();
     renderPeople();
 });
