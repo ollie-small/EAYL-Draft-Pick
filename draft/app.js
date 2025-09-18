@@ -30,12 +30,27 @@ function runDraftAssignment() {
     // Prepare results object
     const results = {};
     teams.forEach(team => results[team] = []);
-    // Assign in rounds
-    let teamIdx = 0;
-    for (const person of shuffled) {
-        const team = teams[teamIdx];
-        results[team].push(person);
-        teamIdx = (teamIdx + 1) % teams.length;
+    // Fair distribution: calculate base and remainder
+    const numTeams = teams.length;
+    const numPeople = shuffled.length;
+    const base = Math.floor(numPeople / numTeams);
+    const remainder = numPeople % numTeams;
+    // Randomly select which teams get the extra participant
+    let teamOrder = [...teams];
+    for (let i = teamOrder.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [teamOrder[i], teamOrder[j]] = [teamOrder[j], teamOrder[i]];
+    }
+    let idx = 0;
+    for (let t = 0; t < numTeams; t++) {
+        const team = teamOrder[t];
+        const count = base + (t < remainder ? 1 : 0);
+        for (let c = 0; c < count; c++) {
+            if (idx < shuffled.length) {
+                results[team].push(shuffled[idx]);
+                idx++;
+            }
+        }
     }
     draftResults = results;
 }
