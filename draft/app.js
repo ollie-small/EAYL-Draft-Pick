@@ -19,6 +19,7 @@ function buildRevealOrder() {
     return order;
 }
 
+let lastRevealAnimated = false;
 function renderDraftResults() {
     const section = document.getElementById('draft-results-section');
     const resultsDiv = document.getElementById('draft-results');
@@ -54,9 +55,15 @@ function renderDraftResults() {
             html += '<ul>';
             for (let i = 0; i < members.length; i++) {
                 // Check if this pick has been revealed
-                const revealed = revealOrder.findIndex(r => r.team === team && r.person === members[i] && r.idx === i) < revealedCount;
+                const revealIdx = revealOrder.findIndex(r => r.team === team && r.person === members[i] && r.idx === i);
+                const revealed = revealIdx < revealedCount;
+                // Only animate if lastRevealAnimated is true and this is the most recent pick
+                let liClass = '';
+                if (lastRevealAnimated && revealed && revealIdx === revealedCount - 1 && revealedCount > 0) {
+                    liClass = ' class="pick-animate"';
+                }
                 if (revealed) {
-                    html += `<li>${members[i]}</li>`;
+                    html += `<li${liClass} data-team="${team}" data-idx="${i}">${members[i]}</li>`;
                 } else {
                     html += `<li style=\"visibility:hidden;\">&nbsp;</li>`;
                 }
@@ -65,6 +72,51 @@ function renderDraftResults() {
         }
     }
     resultsDiv.innerHTML = html;
+
+    // If animating the last reveal, show overlay
+    if (lastRevealAnimated && revealedCount > 0) {
+        const reveal = revealOrder[revealedCount - 1];
+        if (reveal) {
+            showPickRevealOverlay(reveal.person, reveal.team, reveal.idx);
+        }
+    }
+// Overlay logic for pick reveal
+function showPickRevealOverlay(person, team, idx) {
+    // Remove any existing overlay
+    let overlay = document.getElementById('pick-reveal-overlay');
+    if (overlay) overlay.remove();
+
+    overlay = document.createElement('div');
+    overlay.id = 'pick-reveal-overlay';
+    overlay.innerHTML = `<div class="pick-reveal-content">${person}</div>`;
+    document.body.appendChild(overlay);
+
+    // Animate in (CSS will handle initial scale/opacity)
+    setTimeout(() => {
+        overlay.classList.add('show');
+    }, 10);
+
+    // After a delay, animate to final position
+    setTimeout(() => {
+        animatePickToListPosition(overlay, person, team, idx);
+    }, 1100); // Show big for 1.1s
+}
+
+function animatePickToListPosition(overlay, person, team, idx) {
+    // Find the final <li> element for this pick
+    const li = document.querySelector(`li[data-team="${team}"][data-idx="${idx}"]`);
+    if (!li) {
+        overlay.remove();
+        return;
+    }
+    // Get bounding rects
+
+
+    // After animation, remove overlay
+    setTimeout(() => {
+        overlay.remove();
+    }, 750);
+}
 
 
     // Show/hide Reveal Next and Reveal All buttons, and update remaining text
@@ -79,8 +131,10 @@ function renderDraftResults() {
         }
         revealBtn.onclick = function() {
             if (revealedCount < revealOrder.length) {
+                lastRevealAnimated = true;
                 revealedCount++;
                 renderDraftResults();
+                lastRevealAnimated = false;
             }
         };
     }
@@ -93,6 +147,7 @@ function renderDraftResults() {
         }
         revealAllBtn.onclick = function() {
             if (revealedCount < revealOrder.length) {
+                lastRevealAnimated = false;
                 revealedCount = revealOrder.length;
                 renderDraftResults();
             }
