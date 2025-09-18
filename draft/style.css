@@ -39,13 +39,64 @@
     margin-top: 0.5em;
     font-size: 1em;
 }
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Inter', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
     margin: 2em auto;
     background: #f9f9f9;
     color: #222;
     max-width: 900px;
     min-height: 100vh;
+    letter-spacing: 0.01em;
+    font-size: 1.08em;
+}
+
+h1, h2, h3 {
+    font-family: 'Inter', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #1a237e;
+    margin-bottom: 0.5em;
+}
+
+#team-management, #people-management {
+    background: #fff;
+    padding: 1.3em 2.2em 2.2em 2.2em;
+    border-radius: 12px;
+    box-shadow: 0 4px 18px #0002;
+    margin-bottom: 2.2em;
+    max-width: 420px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: box-shadow 0.2s;
+}
+#team-management:hover, #people-management:hover {
+    box-shadow: 0 8px 32px #0003;
+}
+
+#add-person-form input, #add-team-form input {
+    border: 1px solid #bdbdbd;
+    border-radius: 5px;
+    padding: 0.5em 0.7em;
+    font-size: 1em;
+    transition: border 0.2s;
+}
+#add-person-form input:focus, #add-team-form input:focus {
+    border: 1.5px solid #3949ab;
+    outline: none;
+}
+
+#person-list li, #team-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6em 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 1.04em;
+    transition: background 0.15s;
+}
+#person-list li:hover, #team-list li:hover {
+    background: #f5f7fa;
 }
 
 
@@ -102,11 +153,46 @@ body {
 
 #draft-controls {
     margin-top: 2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
+#draft-warning {
+    text-align: center;
+    font-family: 'Inter', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+    font-size: 1.05em;
+}
+
+
+#start-draft-btn {
+    font-family: 'Inter', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+    font-size: 1.25em;
+    font-weight: 800;
+    padding: 0.9em 2.5em;
+    border: none;
+    border-radius: 32px;
+    background: linear-gradient(90deg, #3949ab 0%, #00bcd4 100%);
+    color: #fff;
+    box-shadow: 0 4px 24px #00bcd455, 0 1.5px 6px #3949ab33;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: background 0.25s, transform 0.15s, box-shadow 0.2s;
+    margin: 0.7em 0 0.2em 0;
+    outline: none;
+    position: relative;
+    overflow: hidden;
+}
+#start-draft-btn:enabled:hover, #start-draft-btn:enabled:focus {
+    background: linear-gradient(90deg, #00bcd4 0%, #3949ab 100%);
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 8px 32px #00bcd488, 0 2px 12px #3949ab44;
+}
 #start-draft-btn[disabled] {
     opacity: 0.5;
     cursor: not-allowed;
+    background: linear-gradient(90deg, #bdbdbd 0%, #e0e0e0 100%);
+    box-shadow: none;
 }
 
 
@@ -161,6 +247,41 @@ section {
 #draft-results-section {
     width: 100%;
     box-sizing: border-box;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 6px 32px #00bcd422, 0 2px 8px #3949ab22;
+    padding: 2.2em 2.5em 2.5em 2.5em;
+    margin-top: 2.5em;
+    animation: fadeInCard 0.7s cubic-bezier(.4,1.4,.6,1) 1;
+    position: relative;
+}
+
+#draft-results-section h2 {
+    font-size: 2em;
+    color: #00bcd4;
+    margin-bottom: 1.2em;
+    letter-spacing: 0.03em;
+    text-align: center;
+    font-weight: 800;
+}
+
+#draft-results {
+    font-family: 'Fira Mono', 'JetBrains Mono', 'Menlo', 'Consolas', 'monospace';
+    font-size: 1.13em;
+    color: #222;
+    background: #f7fafd;
+    border-radius: 12px;
+    padding: 1.5em 1.2em;
+    margin-bottom: 1.5em;
+    box-shadow: 0 2px 12px #00bcd422;
+    min-height: 80px;
+    animation: fadeInCard 1.1s cubic-bezier(.4,1.4,.6,1) 1;
+    word-break: break-word;
+}
+
+@keyframes fadeInCard {
+    from { opacity: 0; transform: translateY(30px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @media (max-width: 700px) {
