@@ -1,9 +1,53 @@
+// --- Render Draft Results ---
+function renderDraftResults() {
+    const section = document.getElementById('draft-results-section');
+    const resultsDiv = document.getElementById('draft-results');
+    if (!draftResults) {
+        section.style.display = 'none';
+        resultsDiv.innerHTML = '';
+        return;
+    }
+    section.style.display = 'block';
+    let html = '';
+    for (const [team, members] of Object.entries(draftResults)) {
+        html += `<h3>${team}</h3>`;
+        if (members.length === 0) {
+            html += '<p><em>No participants assigned.</em></p>';
+        } else {
+            html += '<ul>' + members.map(m => `<li>${m}</li>`).join('') + '</ul>';
+        }
+    }
+    resultsDiv.innerHTML = html;
+}
+// --- Draft Logic ---
+function runDraftAssignment() {
+    // Clone and shuffle participants
+    const shuffled = [...people];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    // Prepare results object
+    const results = {};
+    teams.forEach(team => results[team] = []);
+    // Assign in rounds
+    let teamIdx = 0;
+    for (const person of shuffled) {
+        const team = teams[teamIdx];
+        results[team].push(person);
+        teamIdx = (teamIdx + 1) % teams.length;
+    }
+    draftResults = results;
+}
 // Draft Pick App JS
 
 
 // --- Team Management State ---
 let teams = [];
 let editIndex = null;
+
+// --- Draft Assignment State ---
+let draftResults = null; // { teamName: [participant, ...], ... }
 
 // --- People Management State ---
 let people = [];
@@ -234,6 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
             draftWarning.style.display = 'block';
             return;
         }
-        // Proceed to draft phase (placeholder)
-        alert('Draft phase would start now!');
+    // Run draft assignment
+    runDraftAssignment();
+    renderDraftResults();
     };
