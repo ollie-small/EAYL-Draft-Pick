@@ -16,10 +16,20 @@
         </form>
         <ul id="team-list"></ul>
     </section>
+
+    <section id="people-management">
+        <h2>Participants</h2>
+        <form id="add-person-form">
+            <input type="text" id="person-name-input" placeholder="Enter participant name" required />
+            <button type="submit">Add Participant</button>
+        </form>
+    <ul id="person-list"></ul>
+    </section>
+
     <section id="draft-controls">
-        <!-- Draft controls will go here, disabled until 2+ teams -->
-        <button id="start-draft-btn" disabled>Start Draft</button>
-        <p id="team-warning" style="color: #c00; display: none;">At least 2 teams required to start draft.</p>
+        <!-- Draft controls will go here, disabled until 2+ teams and 2+ participants -->
+    <button id="start-draft-btn" disabled>Start Draft</button>
+    <p id="draft-warning" style="color: #c00; display: none; margin-top: 0.5em; font-size: 1em;"></p>
     </section>
     <script src="app.js"></script>
 </body>

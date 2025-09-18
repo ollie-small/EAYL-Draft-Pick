@@ -1,3 +1,42 @@
+#people-management {
+    background: #fff;
+    padding: 1em 2em 2em 2em;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px #0001;
+    margin-bottom: 2em;
+    max-width: 400px;
+}
+
+#add-person-form {
+    display: flex;
+    gap: 0.5em;
+    margin-bottom: 1em;
+}
+
+#person-name-input {
+    flex: 1;
+    padding: 0.5em;
+    font-size: 1em;
+}
+
+#person-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#person-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5em 0;
+    border-bottom: 1px solid #eee;
+}
+
+#person-warning {
+    margin-top: 0.5em;
+    font-size: 1em;
+}
 body {
     font-family: Arial, sans-serif;
     margin: 2em;
@@ -64,7 +103,10 @@ body {
     cursor: not-allowed;
 }
 
-#team-warning {
+
+#team-warning, #person-warning {
     margin-top: 0.5em;
     font-size: 1em;
+    color: #c00;
+    display: none;
 }
