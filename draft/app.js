@@ -1,10 +1,32 @@
 // --- Render Draft Results ---
+// --- Suspenseful Reveal State ---
+let revealOrder = [];
+let revealedCount = 0;
+
+function buildRevealOrder() {
+    if (!draftResults) return [];
+    const teamsArr = Object.keys(draftResults);
+    const maxLen = Math.max(...teamsArr.map(t => draftResults[t].length));
+    const order = [];
+    for (let i = 0; i < maxLen; i++) {
+        for (let t = 0; t < teamsArr.length; t++) {
+            const team = teamsArr[t];
+            if (draftResults[team][i]) {
+                order.push({ team, person: draftResults[team][i], idx: i });
+            }
+        }
+    }
+    return order;
+}
+
 function renderDraftResults() {
     const section = document.getElementById('draft-results-section');
     const resultsDiv = document.getElementById('draft-results');
+    const revealBtn = document.getElementById('reveal-next-btn');
     if (!draftResults) {
         section.style.display = 'none';
         resultsDiv.innerHTML = '';
+        if (revealBtn) revealBtn.style.display = 'none';
         return;
     }
     // Hide other sections
@@ -12,21 +34,59 @@ function renderDraftResults() {
     document.getElementById('people-management').style.display = 'none';
     document.getElementById('draft-controls').style.display = 'none';
     section.style.display = 'block';
+
+    // Build reveal order if not already
+    if (!revealOrder.length) {
+        revealOrder = buildRevealOrder();
+        revealedCount = 0;
+    }
+
+    // Build HTML showing only revealed picks
+    const teamsArr = Object.keys(draftResults);
     let html = '';
-    for (const [team, members] of Object.entries(draftResults)) {
+    for (const team of teamsArr) {
         html += `<h3>${team}</h3>`;
+        const members = draftResults[team];
         if (members.length === 0) {
             html += '<p><em>No participants assigned.</em></p>';
         } else {
-            html += '<ul>' + members.map(m => `<li>${m}</li>`).join('') + '</ul>';
+            html += '<ul>';
+            for (let i = 0; i < members.length; i++) {
+                // Check if this pick has been revealed
+                const revealed = revealOrder.findIndex(r => r.team === team && r.person === members[i] && r.idx === i) < revealedCount;
+                if (revealed) {
+                    html += `<li>${members[i]}</li>`;
+                } else {
+                    html += `<li style=\"visibility:hidden;\">&nbsp;</li>`;
+                }
+            }
+            html += '</ul>';
         }
     }
     resultsDiv.innerHTML = html;
+
+    // Show/hide Reveal Next button
+    if (revealBtn) {
+        if (revealedCount < revealOrder.length) {
+            revealBtn.style.display = '';
+            revealBtn.disabled = false;
+        } else {
+            revealBtn.style.display = 'none';
+        }
+        revealBtn.onclick = function() {
+            if (revealedCount < revealOrder.length) {
+                revealedCount++;
+                renderDraftResults();
+            }
+        };
+    }
+
     // Attach restart handler (button is now visible)
     const restartBtn = document.getElementById('restart-draft-btn');
     if (restartBtn) {
         restartBtn.onclick = restartDraft;
     }
+}
 // --- Restart Draft Logic ---
 function restartDraft() {
     // Reset state
@@ -35,6 +95,8 @@ function restartDraft() {
     draftResults = null;
     editIndex = null;
     personEditIndex = null;
+        revealOrder = [];
+        revealedCount = 0;
     // Show setup sections, hide results
     document.getElementById('team-management').style.display = '';
     document.getElementById('people-management').style.display = '';
@@ -47,7 +109,6 @@ function restartDraft() {
 }
 
 // (No longer needed: restart handler is attached in renderDraftResults)
-}
 // --- Draft Logic ---
 function runDraftAssignment() {
     // Clone and shuffle participants
@@ -381,5 +442,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     // Run draft assignment
     runDraftAssignment();
+    revealOrder = [];
+    revealedCount = 0;
     renderDraftResults();
     };
