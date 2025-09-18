@@ -217,3 +217,23 @@ document.addEventListener('DOMContentLoaded', () => {
     renderTeams();
     renderPeople();
 });
+    
+    // --- Start Draft Handler ---
+    startDraftBtn.onclick = function() {
+        // Double-check validation before proceeding
+        if (teams.length < 2 && people.length < 2) {
+            draftWarning.textContent = 'At least 2 teams and 2 participants are needed to start draft.';
+            draftWarning.style.display = 'block';
+            return;
+        } else if (teams.length < 2) {
+            draftWarning.textContent = 'At least 2 teams are needed to start draft.';
+            draftWarning.style.display = 'block';
+            return;
+        } else if (people.length < 2) {
+            draftWarning.textContent = 'At least 2 participants are needed to start draft.';
+            draftWarning.style.display = 'block';
+            return;
+        }
+        // Proceed to draft phase (placeholder)
+        alert('Draft phase would start now!');
+    };
