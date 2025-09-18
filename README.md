@@ -1,3 +1,3 @@
 # EAYL-Draft-Pick
 
-This is a draft picking applications
+This is a draft picking application
