@@ -8,20 +8,25 @@
 </head>
 <body>
     <h1>Draft Pick App</h1>
-    <section id="team-management">
-        <h2>Teams</h2>
-        <form id="add-team-form">
-            <input type="text" id="team-name-input" placeholder="Enter team name" required />
-            <button type="submit">Add Team</button>
-        </form>
-        <ul id="team-list"></ul>
-    </section>
+    <main class="container">
+        <section id="team-management">
+            <h2>Teams</h2>
+            <form id="add-team-form">
+                <input type="text" id="team-name-input" placeholder="Enter team name" required />
+                <button type="submit">Add Team</button>
+            </form>
+            <div id="team-feedback" aria-live="polite"></div>
+            </form>
+            <ul id="team-list"></ul>
+        </section>
 
-    <section id="people-management">
+        <section id="people-management">
         <h2>Participants</h2>
         <form id="add-person-form">
             <input type="text" id="person-name-input" placeholder="Enter participant name" required />
             <button type="submit">Add Participant</button>
+        </form>
+        <div id="person-feedback" aria-live="polite"></div>
         </form>
     <ul id="person-list"></ul>
     </section>
@@ -36,6 +41,7 @@
         <div id="draft-results"></div>
         <button id="restart-draft-btn" style="margin-top:1em;">Restart Draft</button>
     </section>
+    </main>
     <script src="app.js"></script>
 </body>
 </html>

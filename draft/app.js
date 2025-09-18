@@ -103,11 +103,24 @@ const addTeamForm = document.getElementById('add-team-form');
 const teamNameInput = document.getElementById('team-name-input');
 const startDraftBtn = document.getElementById('start-draft-btn');
 const draftWarning = document.getElementById('draft-warning');
+// Feedback DOM
+let teamFeedback = document.getElementById('team-feedback');
+if (!teamFeedback) {
+    teamFeedback = document.createElement('div');
+    teamFeedback.id = 'team-feedback';
+    teamNameInput.parentNode.parentNode.insertBefore(teamFeedback, teamNameInput.parentNode.nextSibling);
+}
 
 // People DOM
 const personListEl = document.getElementById('person-list');
 const addPersonForm = document.getElementById('add-person-form');
 const personNameInput = document.getElementById('person-name-input');
+let personFeedback = document.getElementById('person-feedback');
+if (!personFeedback) {
+    personFeedback = document.createElement('div');
+    personFeedback.id = 'person-feedback';
+    personNameInput.parentNode.parentNode.insertBefore(personFeedback, personNameInput.parentNode.nextSibling);
+}
 
 // --- Render Team List ---
 function renderTeams() {
@@ -205,22 +218,50 @@ function renderPeople() {
 addTeamForm.onsubmit = (e) => {
     e.preventDefault();
     const name = teamNameInput.value.trim();
-    if (!name) return;
+    teamFeedback.textContent = '';
+    teamFeedback.className = '';
+    if (!name) {
+        teamFeedback.textContent = 'Team name cannot be empty.';
+        teamFeedback.className = 'error';
+        return;
+    }
+    if (teams.includes(name)) {
+        teamFeedback.textContent = 'Team name already exists.';
+        teamFeedback.className = 'error';
+        return;
+    }
     teams.push(name);
     teamNameInput.value = '';
     editIndex = null;
     renderTeams();
+    teamFeedback.textContent = 'Team added!';
+    teamFeedback.className = 'success';
+    setTimeout(() => { teamFeedback.textContent = ''; teamFeedback.className = ''; }, 1200);
 };
 
 // --- Add Person ---
 addPersonForm.onsubmit = (e) => {
     e.preventDefault();
     const name = personNameInput.value.trim();
-    if (!name) return;
+    personFeedback.textContent = '';
+    personFeedback.className = '';
+    if (!name) {
+        personFeedback.textContent = 'Participant name cannot be empty.';
+        personFeedback.className = 'error';
+        return;
+    }
+    if (people.includes(name)) {
+        personFeedback.textContent = 'Participant already exists.';
+        personFeedback.className = 'error';
+        return;
+    }
     people.push(name);
     personNameInput.value = '';
     personEditIndex = null;
     renderPeople();
+    personFeedback.textContent = 'Participant added!';
+    personFeedback.className = 'success';
+    setTimeout(() => { personFeedback.textContent = ''; personFeedback.className = ''; }, 1200);
 };
 
 // --- Edit Team ---
