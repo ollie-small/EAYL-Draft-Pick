@@ -140,10 +140,12 @@ function renderTeams() {
             li.appendChild(input);
             const saveBtn = document.createElement('button');
             saveBtn.textContent = 'Save';
+            saveBtn.className = 'edit-action-btn';
             saveBtn.onclick = () => saveEdit(idx, input.value);
             li.appendChild(saveBtn);
             const cancelBtn = document.createElement('button');
             cancelBtn.textContent = 'Cancel';
+            cancelBtn.className = 'edit-action-btn';
             cancelBtn.onclick = cancelEdit;
             li.appendChild(cancelBtn);
         } else {
@@ -186,10 +188,12 @@ function renderPeople() {
             li.appendChild(input);
             const saveBtn = document.createElement('button');
             saveBtn.textContent = 'Save';
+            saveBtn.className = 'edit-action-btn';
             saveBtn.onclick = () => savePersonEdit(idx, input.value);
             li.appendChild(saveBtn);
             const cancelBtn = document.createElement('button');
             cancelBtn.textContent = 'Cancel';
+            cancelBtn.className = 'edit-action-btn';
             cancelBtn.onclick = cancelPersonEdit;
             li.appendChild(cancelBtn);
         } else {
@@ -279,6 +283,9 @@ function saveEdit(idx, newName) {
     teams[idx] = newName;
     editIndex = null;
     renderTeams();
+    teamFeedback.textContent = 'Team edited!';
+    teamFeedback.className = 'edit';
+    setTimeout(() => { teamFeedback.textContent = ''; teamFeedback.className = ''; }, 1200);
 }
 function cancelEdit() {
     editIndex = null;
@@ -300,6 +307,9 @@ function savePersonEdit(idx, newName) {
     people[idx] = newName;
     personEditIndex = null;
     renderPeople();
+    personFeedback.textContent = 'Participant edited!';
+    personFeedback.className = 'edit';
+    setTimeout(() => { personFeedback.textContent = ''; personFeedback.className = ''; }, 1200);
 }
 function cancelPersonEdit() {
     personEditIndex = null;
@@ -311,6 +321,9 @@ function deleteTeam(idx) {
     teams.splice(idx, 1);
     editIndex = null;
     renderTeams();
+    teamFeedback.textContent = 'Team deleted!';
+    teamFeedback.className = 'delete';
+    setTimeout(() => { teamFeedback.textContent = ''; teamFeedback.className = ''; }, 1200);
 }
 
 // --- Delete Person ---
@@ -318,6 +331,9 @@ function deletePerson(idx) {
     people.splice(idx, 1);
     personEditIndex = null;
     renderPeople();
+    personFeedback.textContent = 'Participant deleted!';
+    personFeedback.className = 'delete';
+    setTimeout(() => { personFeedback.textContent = ''; personFeedback.className = ''; }, 1200);
 }
 
 // --- Draft Controls ---
